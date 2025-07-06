@@ -8,7 +8,7 @@ const BreakingNews = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [page,setPage] = useState(1); // Current page for pagination
+  const [page, setPage] = useState(1); // Current page for pagination
   const savedArticles = useStore.getState().headlines;
   const setSavedArticles = useStore.getState().setHeadlines;
 
@@ -55,7 +55,7 @@ const BreakingNews = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 justify-items-center'>
@@ -93,36 +93,6 @@ const BreakingNews = () => {
         })
       ) : (
         <p className='col-span-full text-center'>No articles found.</p>
-      )}
-
-      {articles.length > 0 && (
-        <div className='flex justify-center items-center space-x-4 mt-8 p-4'>
-          <Button
-            onClick={handlePrevPage}
-            disabled={queryParams.page === 1}
-            className='px-4 py-2 rounded border border-black disabled:opacity-50 disabled:cursor-not-allowed'>
-            Previous
-          </Button>
-
-          <div className='flex items-center space-x-2'>
-            <span className='text-sm text-gray-600'>Page</span>
-            <span className='px-3 py-1 bg-blue-500 text-white rounded font-medium'>
-              {page}
-            </span>
-            <span className='text-sm text-gray-600'>
-              of {Math.ceil(totalResults / queryParams.pageSize)}
-            </span>
-          </div>
-
-          <Button
-            onClick={handleNextPage}
-            disabled={
-              page >= Math.ceil(totalResults / 12)
-            }
-            className='px-4 py-2 rounded border border-black disabled:opacity-50 disabled:cursor-not-allowed'>
-            Next
-          </Button>
-        </div>
       )}
     </div>
   );
