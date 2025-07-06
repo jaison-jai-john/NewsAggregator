@@ -6,8 +6,8 @@ const { setUser } = useStore.getState();
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_dev == 'true'
-      ? `http://${import.meta.env.VITE_dev_api}/api/auth`
-      : `https://${import.meta.env.VITE_prod_api}/api/auth`,
+      ? `${import.meta.env.VITE_dev_api}/api/auth`
+      : `${import.meta.env.VITE_prod_api}/api/auth`,
   headers: {
     'Content-Type': 'application/json',
   },
