@@ -1,8 +1,8 @@
-import { createBrowserRouter, RouterProvider } from "react-router"
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Home from './pages/Home'
-import Layout from "./components/Layout"
+import { createBrowserRouter, RouterProvider } from 'react-router';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 const router = createBrowserRouter([
   {
@@ -11,25 +11,22 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />
-      }
-    ]
+        element: <Home />,
+      },
+    ],
   },
   {
     path: '/login',
-    element: <Login />
+    element: <Login />,
   },
   {
     path: '/signup',
-    element: <Signup />
-  }
-])
+    element: <Signup />,
+  },
+]);
 
 function App() {
-
-  return (
-    <RouterProvider router={router} />
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
