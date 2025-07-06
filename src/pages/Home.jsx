@@ -11,6 +11,7 @@ const Home = () => {
   const user = useStore.getState().user;
   const { setArticles, articles } = useStore.getState();
   const [sArticles, setSArticles] = useState([]);
+  const [totalResults, setTotalResults] = useState(0);
   const navigate = useNavigate();
 
   // Get today's date and yesterday's date
@@ -25,6 +26,8 @@ const Home = () => {
     to: today,
     sortBy: 'relevancy',
     language: 'en',
+    page: 1,
+    pageSize: 20,
   });
 
   const handleQueryChange = (e) => {
@@ -60,13 +63,14 @@ const Home = () => {
   ];
 
   const handleSearch = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     // Add search functionality here
     try {
       const response = await getEverything(queryParams);
       if (response && response.articles.articles) {
         setArticles(response.articles.articles);
         setSArticles(response.articles.articles);
+        setTotalResults(response.articles.totalResults || 0);
         console.log('Search results:', response.articles.articles);
       } else {
         console.error('No articles found in search results');
@@ -76,6 +80,28 @@ const Home = () => {
     }
     console.log('Search submitted with parameters:', queryParams);
   };
+
+  const handlePageChange = (newPage) => {
+    setQueryParams((prev) => ({ ...prev, page: newPage }));
+  };
+
+  const handleNextPage = () => {
+    handlePageChange(queryParams.page + 1);
+  };
+
+  const handlePrevPage = () => {
+    if (queryParams.page > 1) {
+      handlePageChange(queryParams.page - 1);
+    }
+  };
+
+  // Trigger search when page changes
+  useEffect(() => {
+    if (sArticles.length > 0) {
+      handleSearch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryParams.page]);
 
   useEffect(() => {
     if (!user) {
@@ -179,7 +205,42 @@ const Home = () => {
       </div>
 
       <div className='p-4'>
-        {sArticles.length > 0 ? <News /> : <BreakingNews />}
+        {sArticles.length > 0 ? (
+          <>
+            <News />
+            {/* Pagination Controls */}
+            <div className='flex justify-center items-center space-x-4 mt-8 p-4'>
+              <Button
+                onClick={handlePrevPage}
+                disabled={queryParams.page === 1}
+                className='px-4 py-2 rounded border border-black disabled:opacity-50 disabled:cursor-not-allowed'>
+                Previous
+              </Button>
+
+              <div className='flex items-center space-x-2'>
+                <span className='text-sm text-gray-600'>Page</span>
+                <span className='px-3 py-1 bg-blue-500 text-white rounded font-medium'>
+                  {queryParams.page}
+                </span>
+                <span className='text-sm text-gray-600'>
+                  of {Math.ceil(totalResults / queryParams.pageSize)}
+                </span>
+              </div>
+
+              <Button
+                onClick={handleNextPage}
+                disabled={
+                  queryParams.page >=
+                  Math.ceil(totalResults / queryParams.pageSize)
+                }
+                className='px-4 py-2 rounded border border-black disabled:opacity-50 disabled:cursor-not-allowed'>
+                Next
+              </Button>
+            </div>
+          </>
+        ) : (
+          <BreakingNews />
+        )}
       </div>
     </>
   );
