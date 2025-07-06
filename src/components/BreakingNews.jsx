@@ -19,7 +19,6 @@ const BreakingNews = () => {
         const response = await getTopHeadlines({
           pageSize: 12,
           page: 1,
-          sortBy: 'relevancy',
           country: 'us',
         });
         setArticles(response.articles.articles || []);
@@ -33,6 +32,7 @@ const BreakingNews = () => {
 
     if (savedArticles && savedArticles.length > 0) {
       setArticles(savedArticles);
+      console.log('Using saved articles:', savedArticles);
       setLoading(false);
     } else {
       fetchArticles();
