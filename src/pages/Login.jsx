@@ -21,8 +21,6 @@ const Login = () => {
       ...formData,
       [name]: value,
     });
-
-    console.log(`Field changed: ${name}, New value: ${value}`);
   };
 
   const handleSubmit = async (e) => {
@@ -88,13 +86,13 @@ const Login = () => {
                     <Button
                       type='submit'
                       className='w-full'
-                      onChange={handleSubmit}>
+                      onClick={handleSubmit}>
                       Login
                     </Button>
                   </div>
                   <div className='text-center text-sm'>
                     Don&apos;t have an account?{' '}
-                    <a href='#' className='underline underline-offset-4'>
+                    <a href='/signup' className='underline underline-offset-4'>
                       Sign up
                     </a>
                   </div>
